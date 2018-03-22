@@ -1109,13 +1109,14 @@
 		sort: function (order) {
 			var items = {}, rootEl = this.el;
 
-			this.toArray().forEach(function (id, i) {
-				var el = rootEl.children[i];
+			var el = rootEl.children;
+			for(var key in el){
+				var elem = el[key];
 
-				if (_closest(el, this.options.draggable, rootEl)) {
-					items[id] = el;
+				if (_closest(elem, this.options.draggable, rootEl)) {
+					items[elem.getAttribute(this.options.dataIdAttr)] = elem;
 				}
-			}, this);
+			}
 
 			order.forEach(function (id) {
 				if (items[id]) {
