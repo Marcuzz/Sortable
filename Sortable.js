@@ -1,6 +1,6 @@
 /**!
  * Sortable
- * @author	RubaXa   <trash@rubaxa.org>
+ * @author    RubaXa   <trash@rubaxa.org>
  * @license MIT
  */
 
@@ -93,7 +93,9 @@
 		savedInputChecked = [],
 		touchDragOverListeners = [],
 
-		alwaysFalse = function () { return false; },
+		alwaysFalse = function () {
+			return false;
+		},
 
 		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
 			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
@@ -204,7 +206,7 @@
 							: value && (value.join
 								? value.indexOf(fromGroup) > -1
 								: (fromGroup == value)
-							);
+						);
 					};
 				}
 			}
@@ -238,7 +240,8 @@
 				};
 			}
 		}));
-	} catch (err) {}
+	} catch (err) {
+	}
 
 	/**
 	 * @class  Sortable
@@ -261,10 +264,11 @@
 		var defaults = {
 			group: null,
 			sort: true,
+			sortBetweenGroups: true,
 			disabled: false,
 			store: null,
 			handle: null,
-      scroll: true,
+			scroll: true,
 			scrollSensitivity: 30,
 			scrollSpeed: 10,
 			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
@@ -584,7 +588,7 @@
 
 						target = parent; // store last element
 					}
-					/* jshint boss:true */
+						/* jshint boss:true */
 					while (parent = parent.parentNode);
 				}
 
@@ -597,7 +601,7 @@
 
 		_onTouchMove: function (/**TouchEvent*/evt) {
 			if (tapEvt) {
-				var	options = this.options,
+				var options = this.options,
 					fallbackTolerance = options.fallbackTolerance,
 					fallbackOffset = options.fallbackOffset,
 					touch = evt.touches ? evt.touches[0] : evt,
@@ -749,14 +753,14 @@
 
 			if (activeSortable && !options.disabled &&
 				(isOwner
-					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
-					: (
-						putSortable === this ||
-						(
-							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
-							group.checkPut(this, activeSortable, dragEl, evt)
+						? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+						: (
+							putSortable === this ||
+							(
+								(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+								group.checkPut(this, activeSortable, dragEl, evt)
+							)
 						)
-					)
 				) &&
 				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
 			) {
@@ -850,7 +854,7 @@
 						} else {
 							after = tgTop > elTop;
 						}
-						} else if (!isMovingBetweenSortable) {
+					} else if (!isMovingBetweenSortable) {
 						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
 					}
 
@@ -867,7 +871,7 @@
 						_cloneHide(activeSortable, isOwner);
 
 						if (!dragEl.contains(el)) {
-							if (after && !nextSibling) {
+							if (after && !nextSibling || !options.sortBetweenGroups) {
 								el.appendChild(dragEl);
 							} else {
 								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
@@ -1022,30 +1026,30 @@
 			this._nulling();
 		},
 
-		_nulling: function() {
+		_nulling: function () {
 			rootEl =
-			dragEl =
-			parentEl =
-			ghostEl =
-			nextEl =
-			cloneEl =
-			lastDownEl =
+				dragEl =
+					parentEl =
+						ghostEl =
+							nextEl =
+								cloneEl =
+									lastDownEl =
 
-			scrollEl =
-			scrollParentEl =
+										scrollEl =
+											scrollParentEl =
 
-			tapEvt =
-			touchEvt =
+												tapEvt =
+													touchEvt =
 
-			moved =
-			newIndex =
+														moved =
+															newIndex =
 
-			lastEl =
-			lastCSS =
+																lastEl =
+																	lastCSS =
 
-			putSortable =
-			activeGroup =
-			Sortable.active = null;
+																		putSortable =
+																			activeGroup =
+																				Sortable.active = null;
 
 			savedInputChecked.forEach(function (el) {
 				el.checked = true;
@@ -1110,7 +1114,7 @@
 			var items = {}, rootEl = this.el;
 
 			var el = rootEl.children;
-			for(var key in el){
+			for (var key in el) {
 				var elem = el[key];
 
 				if (_closest(elem, this.options.draggable, rootEl)) {
@@ -1319,7 +1323,6 @@
 	}
 
 
-
 	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex, originalEvt) {
 		sortable = (sortable || rootEl[expando]);
 
@@ -1447,7 +1450,7 @@
 				} else if (el.msMatchesSelector) {
 					return el.msMatchesSelector(selector);
 				}
-			} catch(_) {
+			} catch (_) {
 				return false;
 			}
 		}
